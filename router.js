@@ -1,7 +1,7 @@
 const router = require('express').Router(); // Объявили роутер
 const getCards = require('./routes/cards'); // Подключили мидллвэр карточек
 const { getUsersList, getUser, userNotFound } = require('./routes/users'); // Роут пользоватетей
-const notFound = require('./routes/notFound');
+const notFound = require('./routes/notFound'); // Роут ошибки (ничего не найдено)
 
 // Если урл адрес существует, вернуть юзера или список
 router.get('/cards', getCards);

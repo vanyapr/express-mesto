@@ -25,15 +25,15 @@ const getUser = (req, res, next) => {
 
   if (user) {
     res.send(user);
+    return; // Не забывать выходить из функции, если достигнуто нужное условие
   }
 
   next(); // Если юзера нет в базе данных, передали управление далее
 };
 
 // Пользователь не существует
-const userNotFound = (req, res, next) => {
+const userNotFound = (req, res) => {
   res.status(404).send({ message: 'Нет пользователя с таким id' });
-  next();
 };
 
 module.exports = {
