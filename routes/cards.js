@@ -4,4 +4,4 @@ const getCards = (req, res) => {
   res.send(cardsJSON);
 };
 
-module.exports = { getCards };
+module.exports = getCards;
