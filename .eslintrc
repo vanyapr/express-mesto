@@ -6,6 +6,7 @@
       2,
       { "caseSensitive": false }
     ],
-    "import/newline-after-import": "off" // Отключили ругань на импорт модулей сразу на следующей строке
+    "import/newline-after-import": "off", // Отключили ругань на импорт модулей сразу на следующей строке
+    "no-console": "off" // Нам нужен  console.log в проекте
   }
 }
