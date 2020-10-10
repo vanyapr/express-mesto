@@ -1,6 +1,11 @@
 {
   "extends": "airbnb-base",
   "rules": {
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "import/no-unresolved": [ // Отключили ругань на импорт модулей ноды
+      2,
+      { "caseSensitive": false }
+    ],
+    "import/newline-after-import": "off" // Отключили ругань на импорт модулей сразу на следующей строке
   }
 }

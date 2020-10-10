@@ -1,23 +1,16 @@
-const varName = 'test';
+const express = require('express'); // Экспресс
+const path = require('path'); // Метод path
+const { PORT = 3000 } = process.env; // Переменные окружения
 
-console.log(varName);
+// Объявили экспресс
+const app = express();
 
-function foo(c) {
-  console.log(c);
-}
+// Объявили публичную директорию
+const publicFolder = express.static(path.join(__dirname, 'public'));
 
-foo(varName);
+// Подключили публичную директорию как мидлвэр
+app.use(publicFolder);
 
-class Testing {
-  constructor(prop) {
-    this._test = prop.test;
-  }
-
-  doStuff() {
-    console.log(this._test);
-  }
-}
-
-const test = new Testing('Vasiliy');
-
-test.doStuff();
+app.listen(PORT, () => {
+  console.log(`App started. Listening at port ${PORT}`);
+});
