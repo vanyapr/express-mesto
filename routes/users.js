@@ -1,4 +1,17 @@
-const users = require('../data/users.json'); // Подключили JSON файл с пользователями
+// const users = require('../data/users.json'); // Подключили JSON файл с пользователями
+const fs = require('fs');
+const path = require('path');
+const jsonPath = path.join(__dirname, '../data/users.json');
+
+let users = {}; // Создали пустой объект с пользователями
+
+fs.readFile(jsonPath, { encoding: 'utf-8' }, (error, data) => {
+  if (error) {
+    console.log(error);
+  }
+
+  users = JSON.parse(data);
+});
 
 // Отдаём список пользователей
 const getUsersList = (req, res) => {
