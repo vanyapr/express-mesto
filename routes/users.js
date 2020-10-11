@@ -33,35 +33,22 @@ const getUser = (req, res, next) => {
       }
 
       users = JSON.parse(data);
+      user = users.find((item) => item._id === req.params.id);
 
-      if (status === 200) {
-        // Ищем юзера в базе данных
-        user = users.find((item) => item._id === req.params.id);
+      // Если юзер есть, возвращаем его
+      if (!user) {
+        res.status(404).send({ message: 'Нет пользователя с таким id' });
+        return; // Не забывать выходить из функции, если достигнуто нужное условие
       }
+
+      res.send(user);
     } catch (err) {
-      /* Поскольку мы не проходили блоки try...catch, попробую наколхозить */
-      user = { message: 'Ошибка на сервере' };
-      // throw error выбросит ошибку в ноду, поэтому его нельзя использовать
-      status = 500;
+      res.status(500).send({ message: 'Ошибка на сервере' });
     }
   });
-
-  // Если юзер есть, возвращаем его
-  if (user) {
-    res.status(status).send(user);
-    return; // Не забывать выходить из функции, если достигнуто нужное условие
-  }
-
-  next(); // Если юзера нет в базе данных, передали управление далее
-};
-
-// Пользователь не существует
-const userNotFound = (req, res) => {
-  res.status(404).send({ message: 'Нет пользователя с таким id' });
 };
 
 module.exports = {
   getUsersList,
-  userNotFound,
   getUser,
 };
