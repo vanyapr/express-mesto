@@ -1,8 +1,6 @@
 const fs = require('fs'); // Подключили файловую систему
 const path = require('path'); // Подключили модуль path
 const jsonUrl = path.join(__dirname, '../data/cards.json'); // Вычисляем урл адрес файла
-let cardsJSON = {}; // Назначили переменную для записи данных ответа
-let status = 200; // Назначили статус ответа по умолчанию
 
 // Вернули список карточек
 const getCards = (req, res) => {
@@ -15,12 +13,11 @@ const getCards = (req, res) => {
       }
 
       // Полученный поток преобразовали в данные JSON
-      cardsJSON = JSON.parse(data);
+      const cardsJSON = JSON.parse(data);
+      // И отправили ответом сервера
+      res.send(cardsJSON);
     } catch (err) {
-      cardsJSON = { message: 'Ошибка на сервере' };
-      status = 500;
-    } finally {
-      res.status(status).send(cardsJSON);
+      res.status(500).send({ message: 'Ошибка на сервере' });
     }
   });
 };
