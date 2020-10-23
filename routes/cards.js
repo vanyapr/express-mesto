@@ -1,25 +1,8 @@
-const fs = require('fs'); // Подключили файловую систему
-const path = require('path'); // Подключили модуль path
-const jsonUrl = path.join(__dirname, '../data/cards.json'); // Вычисляем урл адрес файла
+const cardsRouter = require('express').Router();
+const { getCards, createCard, deleteCard } = require('../controllers/cards');
 
-// Вернули список карточек
-const getCards = (req, res) => {
-  // Читаем файл
-  fs.readFile(jsonUrl, { encoding: 'utf-8' }, (error, data) => {
-    // Отлавливаем возможные ошибки чтения
-    try {
-      if (error) {
-        throw error;
-      }
+cardsRouter.get('/cards', getCards);
+cardsRouter.post('/cards', createCard);
+cardsRouter.delete('/cards/:cardId', deleteCard);
 
-      // Полученный поток преобразовали в данные JSON
-      const cardsJSON = JSON.parse(data);
-      // И отправили ответом сервера
-      res.send(cardsJSON);
-    } catch (err) {
-      res.status(500).send({ message: 'Ошибка на сервере' });
-    }
-  });
-};
-
-module.exports = getCards;
+module.exports = cardsRouter;
