@@ -7,6 +7,7 @@
       { "caseSensitive": false }
     ],
     "import/newline-after-import": "off", // Отключили ругань на импорт модулей сразу на следующей строке
-    "no-console": "off" // Нам нужен  console.log в проекте
+    "no-console": "off", // Нам нужен  console.log в проекте
+    "no-useless-escape": "off" // Отключить ругань на экранирование символов в регулярных выражениях (\.)
   }
 }
