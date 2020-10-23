@@ -1,7 +1,7 @@
 const Card = require('../models/cards');
 
 const getCards = (req, res) => {
-  Card.find({}).then((data) => {
+  Card.find({}).populate('owner').then((data) => {
     res.send(data);
   }).catch((error) => {
     res.status(500).send(error);
@@ -14,7 +14,11 @@ const createCard = (req, res) => {
   Card.create({ name, link, owner: req.user._id }).then((data) => {
     res.send(data);
   }).catch((error) => {
-    res.status(500).send(error);
+    if (error.name === 'ValidationError') {
+      res.status(400).send({ message: 'Ошибка валидации данных' });
+    } else {
+      res.status(500).send(error);
+    }
   });
 };
 
