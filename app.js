@@ -1,23 +1,21 @@
 const { PORT = 3000 } = process.env; // Переменные окружения
 const express = require('express'); // Экспресс
 const bodyParser = require('body-parser'); // Body-parser для преобразования тела запроса
-const path = require('path'); // Метод path
 const mongoose = require('mongoose'); // Подключили mongoose
 
 // Роутеры
 const usersRouter = require('./routes/users'); // Роут пользователей
 const cardsRouter = require('./routes/cards'); // Роут карточек
-const notfound = require('./routes/notFound'); // Роут ответа 404 ошибки
+const notfound = require('./routes/notfound'); // Роут ответа 404 ошибки
 // const router = require('./router'); // Подключили роутер
 
 // Объявили экспресс
 const app = express();
 
-// Объявили публичную директорию
-const publicFolder = express.static(path.join(__dirname, 'public'));
-
-// Подключили публичную директорию как мидлвэр
-app.use(publicFolder);
+// Запустили сервер на нужном порту
+app.listen(PORT, () => {
+  console.log(`App started. Listening at port ${PORT}`);
+});
 
 // Подключили body-parser
 app.use(bodyParser.json());
@@ -33,10 +31,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Запустили сервер на нужном порту
-app.listen(PORT, () => {
-  console.log(`App started. Listening at port ${PORT}`);
-});
+
 
 // Подключились к Mongodb
 mongoose.connect('mongodb://localhost:27017/mestodb', {
@@ -47,4 +42,5 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 // Объявляем роуты
 app.use('/', usersRouter); // Роутер юзеров
+app.use('/', cardsRouter); // Роутер карточек
 app.use('*', notfound); // Роутер страницы 404
