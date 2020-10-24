@@ -60,7 +60,11 @@ const updateProfile = (req, res) => {
 const updateAvatar = (req, res) => {
   const { avatar } = req.body;
 
-  User.findOneAndUpdate({ _id: req.user._id }, { avatar }).then((data) => {
+  User.findOneAndUpdate({ _id: req.user._id }, { avatar }, {
+    new: true, // обработчик then получит на вход обновлённую запись
+    runValidators: true, // данные будут валидированы перед изменением
+    upsert: true, // если пользователь не найден, он будет создан
+  }).then((data) => {
     res.send(data);
   }).catch((error) => {
     if (error.name === 'ValidationError') {

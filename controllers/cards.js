@@ -43,12 +43,16 @@ const putLikeToCard = (req, res) => {
   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: req.user._id } }, {
     new: true, // обработчик then получит на вход обновлённую запись
     runValidators: true, // данные будут валидированы перед изменением
-    upsert: true, // если пользователь не найден, он будет создан
-  }).then((data) => {
-    res.send(data);
+  }).populate('likes').then((data) => {
+    if (data) {
+      res.send(data);
+    } else {
+      // Эта ошибка не сработает никогда
+      res.status(404).send({ message: 'Карточка не найдена' });
+    }
   }).catch((error) => {
     if (error.kind === 'ObjectId') {
-      res.status(400).send({ message: 'Такой карточки нет' });
+      res.status(404).send({ message: 'Такой карточки нет' });
     } else {
       res.status(500).send({ error });
     }
@@ -62,9 +66,13 @@ const deleteLikeFromCard = (req, res) => {
   Card.findByIdAndUpdate(cardId, { $pull: { likes: req.user._id } }, {
     new: true, // обработчик then получит на вход обновлённую запись
     runValidators: true, // данные будут валидированы перед изменением
-    upsert: true, // если пользователь не найден, он будет создан
-  }).then((data) => {
-    res.send(data);
+  }).populate('likes').then((data) => {
+    if (data) {
+      res.send(data);
+    } else {
+      // Эта ошибка не сработает никогда
+      res.status(404).send({ message: 'Карточка не найдена' });
+    }
   }).catch((error) => {
     if (error.kind === 'ObjectId') {
       res.status(400).send({ message: 'Такой карточки нет' });
