@@ -39,7 +39,7 @@ const deleteCard = (req, res) => {
 const putLikeToCard = (req, res) => {
   const { cardId } = req.params;
 
-  // FIXME: Если лайк уже стоит, надо проверить
+  // TODO: Если лайк уже стоит, надо бы отвечать, что лайк уже стоит
   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: req.user._id } }, {
     new: true, // обработчик then получит на вход обновлённую запись
     runValidators: true, // данные будут валидированы перед изменением
@@ -47,7 +47,11 @@ const putLikeToCard = (req, res) => {
   }).then((data) => {
     res.send(data);
   }).catch((error) => {
-    res.status(500).send({ error });
+    if (error.kind === 'ObjectId') {
+      res.status(400).send({ message: 'Такой карточки нет' });
+    } else {
+      res.status(500).send({ error });
+    }
   });
 };
 

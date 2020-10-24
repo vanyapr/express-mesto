@@ -1,9 +1,9 @@
 {
   "extends": "airbnb-base",
   "rules": {
-    "indent": ["error", 2],
-    "object-curly-newline": "off",
-    "no-underscore-dangle": "off",
+    "indent": ["error", 2], // Прописали отступы в проекте для линтера, чтобы не ругался
+    "object-curly-newline": "off", // Отключили требование объявлять объекты в несколько строк (деструктуризация)
+    "no-underscore-dangle": "off", // Отключили ругань на приватные методы и приватные поля
     "import/no-unresolved": [ // Отключили ругань на импорт модулей ноды
       2,
       { "caseSensitive": false }
