@@ -1,4 +1,4 @@
-const Card = require('../models/cards');
+const Card = require('../models/card');
 
 const getCards = (req, res) => {
   Card.find({}).populate('owner').then((data) => {
@@ -36,8 +36,44 @@ const deleteCard = (req, res) => {
   });
 };
 
+const putLikeToCard = (req, res) => {
+  const { cardId } = req.params;
+
+  // FIXME: Если лайк уже стоит, надо проверить
+  Card.findByIdAndUpdate(cardId, { $addToSet: { likes: req.user._id } }, {
+    new: true, // обработчик then получит на вход обновлённую запись
+    runValidators: true, // данные будут валидированы перед изменением
+    upsert: true, // если пользователь не найден, он будет создан
+  }).then((data) => {
+    res.send(data);
+  }).catch((error) => {
+    res.status(500).send({ error });
+  });
+};
+
+// Стоит описать отдельные методы, на случай, если в будущем функционал будет меняться
+const deleteLikeFromCard = (req, res) => {
+  const { cardId } = req.params;
+
+  Card.findByIdAndUpdate(cardId, { $pull: { likes: req.user._id } }, {
+    new: true, // обработчик then получит на вход обновлённую запись
+    runValidators: true, // данные будут валидированы перед изменением
+    upsert: true, // если пользователь не найден, он будет создан
+  }).then((data) => {
+    res.send(data);
+  }).catch((error) => {
+    if (error.kind === 'ObjectId') {
+      res.status(400).send({ message: 'Такой карточки нет' });
+    } else {
+      res.status(500).send({ error });
+    }
+  });
+};
+
 module.exports = {
   getCards,
   createCard,
   deleteCard,
+  putLikeToCard,
+  deleteLikeFromCard,
 };

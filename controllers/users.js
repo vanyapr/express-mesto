@@ -1,4 +1,4 @@
-const User = require('../models/users');
+const User = require('../models/user');
 
 // Найти всех пользователей в базе
 const getAllUsers = (req, res) => {
@@ -12,7 +12,6 @@ const getAllUsers = (req, res) => {
 // Найти пользователя в базе
 const getUser = (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
 
   User.findById(userId).then((data) => {
     if (data) {
@@ -33,7 +32,7 @@ const createUser = (req, res) => {
     res.send(data);
   }).catch((error) => {
     if (error.name === 'ValidationError') {
-      res.status(400).send({ message: 'Ошибка валидации данных' });
+      res.status(400).send({ message: 'Ошибка валидации - исправьте тело запроса' });
     } else {
       res.status(500).send(error);
     }
@@ -51,7 +50,7 @@ const updateProfile = (req, res) => {
     res.send(data);
   }).catch((error) => {
     if (error.name === 'ValidationError') {
-      res.status(400).send({ message: 'Ошибка валидации данных' });
+      res.status(400).send({ message: 'Ошибка валидации - исправьте тело запроса' });
     } else {
       res.status(500).send(error);
     }
@@ -65,7 +64,7 @@ const updateAvatar = (req, res) => {
     res.send(data);
   }).catch((error) => {
     if (error.name === 'ValidationError') {
-      res.status(400).send({ message: 'Ошибка валидации данных' });
+      res.status(400).send({ message: 'Ошибка валидации - исправьте тело запроса' });
     } else {
       res.status(500).send(error);
     }

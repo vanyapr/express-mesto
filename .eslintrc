@@ -2,6 +2,7 @@
   "extends": "airbnb-base",
   "rules": {
     "indent": ["error", 2],
+    "object-curly-newline": "off",
     "no-underscore-dangle": "off",
     "import/no-unresolved": [ // Отключили ругань на импорт модулей ноды
       2,
