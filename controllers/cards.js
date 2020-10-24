@@ -48,7 +48,7 @@ const putLikeToCard = (req, res) => {
       res.send(data);
     } else {
       // Эта ошибка не сработает никогда
-      res.status(404).send({ message: 'Карточка не найдена' });
+      res.status(404).send({ message: 'Карточка не найдена, как вы это сделали?' });
     }
   }).catch((error) => {
     if (error.kind === 'ObjectId') {
@@ -71,11 +71,11 @@ const deleteLikeFromCard = (req, res) => {
       res.send(data);
     } else {
       // Эта ошибка не сработает никогда
-      res.status(404).send({ message: 'Карточка не найдена' });
+      res.status(404).send({ message: 'Карточка не найдена, как вы это сделали?' });
     }
   }).catch((error) => {
     if (error.kind === 'ObjectId') {
-      res.status(400).send({ message: 'Такой карточки нет' });
+      res.status(404).send({ message: 'Такой карточки нет' });
     } else {
       res.status(500).send({ error });
     }
