@@ -4,7 +4,7 @@ const getCards = (req, res) => {
   Card.find({}).populate('owner').then((data) => {
     res.send(data);
   }).catch((error) => {
-    res.status(500).send(error);
+    res.status(500).send({ message: error.message });
   });
 };
 
@@ -17,7 +17,7 @@ const createCard = (req, res) => {
     if (error.name === 'ValidationError') {
       res.status(400).send({ message: 'Ошибка валидации данных' });
     } else {
-      res.status(500).send(error);
+      res.status(500).send({ message: error.message });
     }
   });
 };
@@ -32,7 +32,11 @@ const deleteCard = (req, res) => {
       res.status(404).send({ message: 'Такой карточки нет' });
     }
   }).catch((error) => {
-    res.status(500).send(error);
+    if (error.kind === 'ObjectId') {
+      res.status(400).send({ message: 'Такой карточки нет' });
+    } else {
+      res.status(500).send({ message: error.message });
+    }
   });
 };
 
@@ -47,14 +51,15 @@ const putLikeToCard = (req, res) => {
     if (data) {
       res.send(data);
     } else {
-      // Эта ошибка не сработает никогда
-      res.status(404).send({ message: 'Карточка не найдена, как вы это сделали?' });
+      // Эта ошибка сработает если в метод передать корректный ObjectId отсутствующий в БД.
+      // Например вы можете создать пользователя, скопировать его ObjectId и получить ошибку :)
+      res.status(404).send({ message: 'Карточка не найдена' });
     }
   }).catch((error) => {
     if (error.kind === 'ObjectId') {
-      res.status(404).send({ message: 'Такой карточки нет' });
+      res.status(400).send({ message: 'Такой карточки нет' });
     } else {
-      res.status(500).send({ error });
+      res.status(500).send({ message: error.message });
     }
   });
 };
@@ -70,14 +75,15 @@ const deleteLikeFromCard = (req, res) => {
     if (data) {
       res.send(data);
     } else {
-      // Эта ошибка не сработает никогда
-      res.status(404).send({ message: 'Карточка не найдена, как вы это сделали?' });
+      // Эта ошибка сработает если в метод передать корректный ObjectId отсутствующий в БД.
+      // Например вы можете создать пользователя, скопировать его ObjectId и получить ошибку :)
+      res.status(404).send({ message: 'Карточка не найдена' });
     }
   }).catch((error) => {
     if (error.kind === 'ObjectId') {
-      res.status(404).send({ message: 'Такой карточки нет' });
+      res.status(400).send({ message: 'Такой карточки нет' });
     } else {
-      res.status(500).send({ error });
+      res.status(500).send({ message: error.message });
     }
   });
 };

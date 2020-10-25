@@ -5,7 +5,7 @@ const getAllUsers = (req, res) => {
   User.find({}).then((data) => {
     res.send(data);
   }).catch((error) => {
-    res.status(500).send(error);
+    res.status(500).send({ message: error.message });
   });
 };
 
@@ -20,7 +20,11 @@ const getUser = (req, res) => {
       res.status(404).send({ message: 'Пользователь не найден' });
     }
   }).catch((error) => {
-    res.status(500).send(error);
+    if (error.kind === 'ObjectId') {
+      res.status(400).send({ message: 'Такого пользователя нет' });
+    } else {
+      res.status(500).send({ message: error.message });
+    }
   });
 };
 
@@ -34,7 +38,7 @@ const createUser = (req, res) => {
     if (error.name === 'ValidationError') {
       res.status(400).send({ message: 'Ошибка валидации - исправьте тело запроса' });
     } else {
-      res.status(500).send(error);
+      res.status(500).send({ message: error.message });
     }
   });
 };
@@ -52,7 +56,7 @@ const updateProfile = (req, res) => {
     if (error.name === 'ValidationError') {
       res.status(400).send({ message: 'Ошибка валидации - исправьте тело запроса' });
     } else {
-      res.status(500).send(error);
+      res.status(500).send({ message: error.message });
     }
   });
 };
@@ -70,7 +74,7 @@ const updateAvatar = (req, res) => {
     if (error.name === 'ValidationError') {
       res.status(400).send({ message: 'Ошибка валидации - исправьте тело запроса' });
     } else {
-      res.status(500).send(error);
+      res.status(500).send({ message: error.message });
     }
   });
 };
